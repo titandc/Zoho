@@ -2,30 +2,26 @@ package invoice
 
 import (
 	"fmt"
-	"github.com/schmorrison/Zoho"
+	"go-zoho/zoho"
 )
 
 //https://www.zoho.com/invoice/api/v3/#Contacts_Create_a_Contact
-//func (c *ZohoInvoiceAPI) CreateContact(request interface{}, organizationId string, params map[string]zoho.Parameter) (data ListContactsResponse, err error) {
-func (c *ZohoInvoiceAPI) CreateContact(request interface{}, enablePortal bool) (data CreateContactResponse, err error) {
-
-	// Renew token if necessary
-	if c.Zoho.Token.CheckExpiry() {
-		err := c.Zoho.RefreshTokenRequest()
-		if err != nil {
-			return CreateContactResponse{}, err
-		}
-	}
+//func (c *API) CreateContact(request interface{}, OrganizationID string, params map[string]zoho.Parameter) (data ListContactsResponse, err error) {
+func (c *API) CreateContact(request interface{}, enablePortal bool) (data CreateContactResponse, err error) {
 
 	endpoint := zoho.Endpoint{
 		Name:         ContactsModule,
-		URL:          fmt.Sprintf(InvoiceAPIEndPoint+"%s", ContactsModule),
+		URL:          fmt.Sprintf(InvoiceAPIEndpoint+"%s", ContactsModule),
 		Method:       zoho.HTTPPost,
 		ResponseData: &CreateContactResponse{},
 		URLParameters: map[string]zoho.Parameter{
 			"filter_by": "",
 		},
 		RequestBody: &request,
+		JSONString:  true,
+		Headers: map[string]string{
+			InvoiceAPIEndpointHeader: c.OrganizationID,
+		},
 	}
 
 	/*for k, v := range params {
@@ -39,14 +35,14 @@ func (c *ZohoInvoiceAPI) CreateContact(request interface{}, enablePortal bool) (
 
 	if v, ok := endpoint.ResponseData.(*CreateContactResponse); ok {
 		// Check if the request succeeded
-		if v.Code != 0 {
+		if v.Contact.ContactID == "" {
 			return *v, fmt.Errorf("Failed to create contact: %s", v.Message)
 		}
 		// Enable portal if requested
 		if enablePortal {
 			endpoint := zoho.Endpoint{
 				Name:         ContactsModule,
-				URL:          fmt.Sprintf(InvoiceAPIEndPoint+"%s/%s/portal/enable", ContactsModule, v.Contact.ContactID),
+				URL:          fmt.Sprintf(InvoiceAPIEndpoint+"%s/%s/portal/enable", ContactsModule, v.Contact.ContactID),
 				Method:       zoho.HTTPPost,
 				ResponseData: &EnableContactDashboardResponse{},
 				URLParameters: map[string]zoho.Parameter{
@@ -56,6 +52,10 @@ func (c *ZohoInvoiceAPI) CreateContact(request interface{}, enablePortal bool) (
 					ContactPersons: []EnableContactDashboardRequestPersonID{{
 						ContactPersonID: v.Contact.ContactPersons[0].ContactPersonID,
 					}}},
+				JSONString:  true,
+				Headers: map[string]string{
+					InvoiceAPIEndpointHeader: c.OrganizationID,
+				},
 			}
 			err = c.Zoho.HTTPRequest(&endpoint)
 			if err != nil {

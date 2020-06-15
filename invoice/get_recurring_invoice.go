@@ -2,28 +2,24 @@ package invoice
 
 import (
 	"fmt"
-	zoho "github.com/schmorrison/Zoho"
+	"go-zoho/zoho"
 )
 
 //https://www.zoho.com/invoice/api/v3/#Recurring_Invoices_Get_a_Recurring_Invoice
-//func (c *ZohoInvoiceAPI) GetRecurringInvoice(request interface{}, organizationId string, params map[string]zoho.Parameter) (data ListContactsResponse, err error) {
-func (c *ZohoInvoiceAPI) GetRecurringInvoice(recurringInvoiceId string) (data RecurringInvoiceResponse, err error) {
-
-	// Renew token if necessary
-	if c.Zoho.Token.CheckExpiry() {
-		err := c.Zoho.RefreshTokenRequest()
-		if err != nil {
-			return RecurringInvoiceResponse{}, err
-		}
-	}
+//func (c *API) GetRecurringInvoice(request interface{}, OrganizationID string, params map[string]zoho.Parameter) (data ListContactsResponse, err error) {
+func (c *API) GetRecurringInvoice(recurringInvoiceId string) (data RecurringInvoiceResponse, err error) {
 
 	endpoint := zoho.Endpoint{
 		Name:         RecurringInvoicesModule,
-		URL:          fmt.Sprintf(InvoiceAPIEndPoint+"%s/%s", RecurringInvoicesModule, recurringInvoiceId),
+		URL:          fmt.Sprintf(InvoiceAPIEndpoint+"%s/%s", RecurringInvoicesModule, recurringInvoiceId),
 		Method:       zoho.HTTPGet,
 		ResponseData: &RecurringInvoiceResponse{},
 		URLParameters: map[string]zoho.Parameter{
 			"filter_by": "",
+		},
+		JSONString:  true,
+		Headers: map[string]string{
+			InvoiceAPIEndpointHeader: c.OrganizationID,
 		},
 	}
 
@@ -73,17 +69,19 @@ type RecurringInvoiceResponse struct {
 		LastSentDate        string `json:"last_sent_date"`
 		NextInvoiceDate     string `json:"next_invoice_date"`
 		LineItems           []struct {
-			LineItemId  string  `json:"line_item_id"`
-			ItemId      string  `json:"item_id"`
-			Quantity    int64   `json:"quantity"`
-			Rate        float64 `json:"rate"`
-			Discount    float64 `json:"discount"`
-			Name        string  `json:"name"`
-			ItemTotal   float64 `json:"item_total"`
-			Sku         string  `json:"sku"`
-			ProductType string  `json:"product_type"`
-			ProjectId   string  `json:"project_id"`
-			ProjectName string  `json:"project_name"`
+			LineItemId       string  `json:"line_item_id"`
+			ItemId           string  `json:"item_id"`
+			ItemOrder        float64 `json:"item_order"`
+			DiscountAmount   float64 `json:"discount_amount"`
+			Quantity         int64   `json:"quantity"`
+			Rate             float64 `json:"rate"`
+			Discount         float64 `json:"discount"`
+			Name             string  `json:"name"`
+			ItemTotal        float64 `json:"item_total"`
+			Sku              string  `json:"sku"`
+			ProductType      string  `json:"product_type"`
+			ProjectId        string  `json:"project_id"`
+			ProjectName      string  `json:"project_name"`
 			ItemCustomFields []struct {
 				CustomfieldID string `json:"customfield_id,omitempty"`
 				Label         string `json:"label"`

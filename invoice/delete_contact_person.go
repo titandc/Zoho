@@ -2,25 +2,17 @@ package invoice
 
 import (
 	"fmt"
-	zoho "github.com/schmorrison/Zoho"
+	"go-zoho/zoho"
 )
 
 //https://www.zoho.com/invoice/api/v3/#Contact_Persons_Delete_a_contact_person
-//func (c *ZohoInvoiceAPI) DeleteContactPerson(request interface{}, organizationId string, params map[string]zoho.Parameter) (data DeleteContactPersonResponse, err error) {
-func (c *ZohoInvoiceAPI) DeleteContactPerson(contactPersonID string) (data DeleteContactPersonResponse, err error) {
-
-	// Renew token if necessary
-	if c.Zoho.Token.CheckExpiry() {
-		err := c.Zoho.RefreshTokenRequest()
-		if err != nil {
-			return DeleteContactPersonResponse{}, err
-		}
-	}
+//func (c *API) DeleteContactPerson(request interface{}, OrganizationID string, params map[string]zoho.Parameter) (data DeleteContactPersonResponse, err error) {
+func (c *API) DeleteContactPerson(contactPersonID string) (data DeleteContactPersonResponse, err error) {
 
 	endpoint := zoho.Endpoint{
 		Name: ContactsModule,
 		URL: fmt.Sprintf(
-			InvoiceAPIEndPoint+"%s/%s/%s",
+			InvoiceAPIEndpoint+"%s/%s/%s",
 			ContactsModule,
 			ContactsPersonSubModule,
 			contactPersonID,
@@ -29,6 +21,10 @@ func (c *ZohoInvoiceAPI) DeleteContactPerson(contactPersonID string) (data Delet
 		ResponseData: &DeleteContactPersonResponse{},
 		URLParameters: map[string]zoho.Parameter{
 			"filter_by": "",
+		},
+		JSONString:  true,
+		Headers: map[string]string{
+			InvoiceAPIEndpointHeader: c.OrganizationID,
 		},
 	}
 
