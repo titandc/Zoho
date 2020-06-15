@@ -1,7 +1,7 @@
 package invoice
 
 import (
-	zoho "github.com/schmorrison/Zoho"
+	zoho "github.com/titandc/Zoho"
 	"math/rand"
 )
 

@@ -2,7 +2,7 @@ package invoice
 
 import (
 	"fmt"
-	zoho "github.com/schmorrison/Zoho"
+	zoho "github.com/titandc/Zoho"
 )
 
 //https://www.zoho.com/invoice/api/v3/#Customer_Payments_Create_a_payment
