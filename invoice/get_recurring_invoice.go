@@ -103,5 +103,6 @@ type RecurringInvoiceResponse struct {
 			Value         string `json:"value"`
 		} `json:"custom_fields"`
 		PaymentOptions PaymentOptions `json:"payment_options"`
+		ContactPersons []string       `json:"contact_persons"`
 	} `json:"recurring_invoice"`
 }
