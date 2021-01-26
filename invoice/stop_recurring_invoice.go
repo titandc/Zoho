@@ -12,7 +12,7 @@ func (c *API) StopRecurringInvoice(recurringInvoiceId string) (data StopRecurrin
 	endpoint := zoho.Endpoint{
 		Name: RecurringInvoicesModule,
 		URL: fmt.Sprintf(
-			InvoiceAPIEndpoint+"%s/status/stop", recurringInvoiceId,
+			InvoiceAPIEndpoint+"%s/%s/status/stop", RecurringInvoicesModule, recurringInvoiceId,
 		),
 		Method:       zoho.HTTPPost,
 		ResponseData: &StopRecurringInvoiceResponse{},
