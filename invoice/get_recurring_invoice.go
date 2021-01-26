@@ -69,13 +69,13 @@ type RecurringInvoiceResponse struct {
 		LastSentDate        string `json:"last_sent_date"`
 		NextInvoiceDate     string `json:"next_invoice_date"`
 		LineItems           []struct {
-			LineItemId       string  `json:"line_item_id"`
-			ItemId           string  `json:"item_id"`
-			ItemOrder        float64 `json:"item_order"`
-			DiscountAmount   float64 `json:"discount_amount"`
-			Quantity         int64   `json:"quantity"`
-			Rate             float64 `json:"rate"`
-			Discount         float64 `json:"discount"`
+			LineItemId     string  `json:"line_item_id"`
+			ItemId         string  `json:"item_id"`
+			ItemOrder      float64 `json:"item_order"`
+			DiscountAmount float64 `json:"discount_amount"`
+			Quantity       int64   `json:"quantity"`
+			Rate           float64 `json:"rate"`
+			//Discount         float64 `json:"discount"`
 			Name             string  `json:"name"`
 			ItemTotal        float64 `json:"item_total"`
 			Sku              string  `json:"sku"`
