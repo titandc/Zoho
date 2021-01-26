@@ -92,16 +92,16 @@ type RecurringInvoiceResponse struct {
 		UnpaidInvoicesBalance float64        `json:"unpaid_invoices_balance"`
 		BillingAddress        ContactAddress `json:"billing_address"`
 		ShippingAddress       ContactAddress `json:"shipping_address"`
-		/*CustomFields []struct {
-		    CustomfieldId int64  `json:"customfield_id"`
-		    DataType      string `json:"data_type"`
-		    Index         int64  `json:"index"`
-		    IsActive      bool   `json:"is_active"`
-		    Label         string `json:"label"`
-		    ShowInAllPdf  bool   `json:"show_in_all_pdf"`
-		    ShowOnPdf     bool   `json:"show_on_pdf"`
-		    Value         string `json:"value"`
-		} `json:"custom_fields"`*/
+		CustomFields          []struct {
+			CustomfieldId string `json:"customfield_id"`
+			DataType      string `json:"data_type"`
+			Index         int64  `json:"index"`
+			IsActive      bool   `json:"is_active"`
+			Label         string `json:"label"`
+			ShowInAllPdf  bool   `json:"show_in_all_pdf"`
+			ShowOnPdf     bool   `json:"show_on_pdf"`
+			Value         string `json:"value"`
+		} `json:"custom_fields"`
 		PaymentOptions PaymentOptions `json:"payment_options"`
 	} `json:"recurring_invoice"`
 }
